@@ -7,7 +7,7 @@ using OfficeOpenXml;
 
 namespace API.Controllers;
 
-[Route("api/[controller]")]
+[Route("api/[controller]/[action]")]
 [ApiController]
 public class SeedController : ControllerBase
 {
