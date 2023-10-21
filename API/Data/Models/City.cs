@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace API.Data.Models;
 
+[Table("Cities")]
 public class City
 {
     /// <summary>
@@ -25,11 +26,13 @@ public class City
     /// <summary>
     /// City latitude
     /// </summary>
+    [Column(TypeName = "decimal(7,4)")]
     public decimal Lat { get; set; }
     
     /// <summary>
     /// City longitude
     /// </summary>
+    [Column(TypeName = "decimal(7,4)")]
     public decimal Lon { get; set; }
     
     /// <summary>

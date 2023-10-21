@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace API.Data.Models;
 
+[Table("Countries")]
 public class Country
 {
     /// <summary>

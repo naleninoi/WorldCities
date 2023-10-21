@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.SpaServices.AngularCli;
+﻿using API.Data;
+using Microsoft.AspNetCore.SpaServices.AngularCli;
+using Microsoft.EntityFrameworkCore;
 
 namespace API;
 
@@ -20,6 +22,10 @@ public class Startup
         {
             configuration.RootPath = "ClientApp/dist";
         });
+        
+        var connectionString = Configuration["ConnectionStrings:DefaultConnection"];
+
+        services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(connectionString));
     }
     
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
