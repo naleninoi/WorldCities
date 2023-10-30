@@ -8,6 +8,9 @@ import {NavMenuComponent} from './nav-menu/nav-menu.component';
 import { CitiesComponent } from './cities/cities.component';
 import { HttpClientModule } from '@angular/common/http';
 import { BASE_URL } from './_config/app.config';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FormsModule } from '@angular/forms';
+import { AngularMaterialModule } from './angular-material.module';
 
 @NgModule({
   declarations: [
@@ -19,7 +22,10 @@ import { BASE_URL } from './_config/app.config';
   imports: [
     BrowserModule,
     HttpClientModule,
-    AppRoutingModule
+    FormsModule,
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    AngularMaterialModule
   ],
   providers: [
     { provide: BASE_URL, useValue: 'https://localhost:7105/api/', deps: [] }
