@@ -17,10 +17,13 @@ public class CitiesController : ControllerBase
     }
 
     // GET: api/Cities
+    // GET: api/Cities/?pageIndex=0&pageSize=10
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<City>>> GetCities()
+    public async Task<ActionResult<ApiResult<City>>> GetCities(
+        int pageIndex = 0,
+        int pageSize = 10)
     {
-        return await _context.Cities.ToListAsync();
+        return await ApiResult<City>.CreateAsync(_context.Cities, pageIndex, pageSize);
     }
 
     // GET: api/Cities/5
