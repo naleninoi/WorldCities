@@ -11,13 +11,15 @@ import { BASE_URL } from './_config/app.config';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
 import { AngularMaterialModule } from './angular-material.module';
+import { CountriesComponent } from './countries/countries.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     NavMenuComponent,
-    CitiesComponent
+    CitiesComponent,
+    CountriesComponent
   ],
   imports: [
     BrowserModule,
