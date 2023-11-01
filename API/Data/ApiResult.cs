@@ -113,7 +113,7 @@ public class ApiResult<T>
     {
         if (!string.IsNullOrEmpty(filterColumn) && !string.IsNullOrEmpty(filterQuery) && IsValidProperty(filterColumn))
         {
-            source = source.Where(string.Format("{0}.Contains(@0)", filterColumn), filterQuery);
+            source = source.Where($"{filterColumn}.ToLower().Contains(@0)", filterQuery.ToLower());
         }
         
         var count = await source.CountAsync();

@@ -6,6 +6,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { ApiResult } from '../models/api-result.interface';
 import { MatSort } from '@angular/material/sort';
+import { MatInput } from '@angular/material/input';
 
 @Component({
   selector: 'app-cities',
@@ -20,6 +21,9 @@ export class CitiesComponent implements OnInit {
   defaultPageSize = 10;
   defaultSortColumn = 'name';
   defaultSortOrder = 'asc';
+
+  defaultFilterColumn = 'name';
+  filterQuery: string;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -42,11 +46,17 @@ export class CitiesComponent implements OnInit {
 
   getData(event: PageEvent): void {
     const url = this.baseUrl + 'Cities';
-    const params = new HttpParams()
+    let params = new HttpParams()
       .set('pageIndex', event.pageIndex.toString())
       .set('pageSize', event.pageSize.toString())
       .set('sortColumn', this.sort && this.sort.active ? this.sort.active : this.defaultSortColumn)
       .set('sortOrder', this.sort && this.sort.direction ? this.sort.direction : this.defaultSortOrder);
+
+    if (this.filterQuery) {
+      params = params.append('filterColumn', this.defaultFilterColumn);
+      params = params.append('filterQuery', this.filterQuery);
+    }
+
     this.http.get<ApiResult<City>>(url, {params})
       .subscribe(result => {
         this.paginator.length = result.totalCount;
