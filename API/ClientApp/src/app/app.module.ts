@@ -9,9 +9,10 @@ import { CitiesComponent } from './cities/cities.component';
 import { HttpClientModule } from '@angular/common/http';
 import { BASE_URL } from './_config/app.config';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AngularMaterialModule } from './angular-material.module';
 import { CountriesComponent } from './countries/countries.component';
+import { CityEditComponent } from './city-edit/city-edit.component';
 
 @NgModule({
   declarations: [
@@ -19,12 +20,14 @@ import { CountriesComponent } from './countries/countries.component';
     HomeComponent,
     NavMenuComponent,
     CitiesComponent,
-    CountriesComponent
+    CountriesComponent,
+    CityEditComponent
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     FormsModule,
+    ReactiveFormsModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     AngularMaterialModule
