@@ -120,9 +120,9 @@ public class ApiResult<T>
 
         if (!string.IsNullOrEmpty(sortColumn) && IsValidProperty(sortColumn))
         {
-            sortOrder = !string.IsNullOrEmpty(sortOrder) && sortOrder.ToUpper() == "ASC"
-                ? "ASC"
-                : "DESC";
+            sortOrder = !string.IsNullOrEmpty(sortOrder) && sortOrder.ToUpper() == "DESC"
+                ? "DESC"
+                : "ASC";
             source = source.OrderBy($"{sortColumn} {sortOrder}");
         }
         

@@ -78,6 +78,7 @@ public class CitiesController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<City>> PostCity(City city)
     {
+        city.Name_ASCII = city.Name;
         _context.Cities.Add(city);
         await _context.SaveChangesAsync();
         return CreatedAtAction("GetCity", new { id = city.Id },
