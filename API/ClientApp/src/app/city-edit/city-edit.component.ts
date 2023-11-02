@@ -16,7 +16,13 @@ export class CityEditComponent implements OnInit {
 
   form: FormGroup;
 
+  // the city object to edit or create
   city: City;
+
+  // the city object id, as fetched from the active route:
+  // It's NULL when we're adding a new city,
+  // and not NULL when we're editing an existing one.
+  id?: number;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -35,29 +41,46 @@ export class CityEditComponent implements OnInit {
   }
 
   loadData(): void {
-    const id = +this.activatedRoute.snapshot.paramMap.get('id');
-    const url = this.baseurl + 'Cities/' + id;
-    this.http.get<City>(url).subscribe(result => {
-      this.city = result;
-      this.title = 'Edit - ' + this.city.name;
+    this.id = +this.activatedRoute.snapshot.paramMap.get('id');
+    // EDIT MODE
+    if (this.id) {
+      const url = this.baseurl + 'Cities/' + this.id;
+      this.http.get<City>(url).subscribe(result => {
+          this.city = result;
+          this.title = 'Edit - ' + this.city.name;
 
-      this.form.patchValue(this.city);
-    },
-      error => console.error(error));
+          this.form.patchValue(this.city);
+        },
+        error => console.error(error));
+    // CREATE MODE
+    } else {
+      this.title = 'Create a new City';
+    }
   }
 
   onSubmit(): void {
-    const city = this.city;
+    const city = this.id ? this.city : {} as City;
     city.name = this.form.get('name').value;
     city.lat = +this.form.get('lat').value;
     city.lon = +this.form.get('lon').value;
 
-    const url = this.baseurl + 'Cities/' + this.city.id;
-    this.http.put<City>(url, city).subscribe(result => {
-      console.log(`City with id ${this.city.id} has been updated.`);
-      this.router.navigateByUrl('/cities');
-    },
-      error => console.error(error));
+    // EDIT MODE
+    if (this.id) {
+      const url = this.baseurl + 'Cities/' + this.id;
+      this.http.put<City>(url, city).subscribe(result => {
+          console.log(`City with id ${this.city.id} has been updated.`);
+          this.router.navigateByUrl('/cities');
+        },
+        error => console.error(error));
+      // CREATE MODE
+    } else {
+      const url = this.baseurl + 'Cities';
+      this.http.post<City>(url, city).subscribe(result => {
+          console.log(`City with id ${this.city.id} has been created.`);
+          this.router.navigateByUrl('/cities');
+        },
+        error => console.error(error));
+    }
   }
 
 }

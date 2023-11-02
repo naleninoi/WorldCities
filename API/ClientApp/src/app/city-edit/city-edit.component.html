@@ -1,7 +1,7 @@
 <div class="city-edit">
   <h1>{{title}}</h1>
 
-  <p *ngIf="!city"><em>Loading...</em></p>
+  <p *ngIf="this.id && !city"><em>Loading...</em></p>
 
   <div class="form"
        [formGroup]="form"
@@ -35,8 +35,13 @@
     </div>
 
     <div class="form-group commands">
-      <button type="submit" class="btn btn-success"
+      <button *ngIf="id"
+              type="submit" class="btn btn-success"
               (click)="onSubmit()">Save
+      </button>
+      <button *ngIf="!id"
+              type="submit" class="btn btn-success"
+              (click)="onSubmit()">Create
       </button>
       <button type="submit" class="btn"
               [routerLink]="['/cities']">Cancel
