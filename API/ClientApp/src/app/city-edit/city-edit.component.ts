@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, AsyncValidatorFn, FormControl, FormGroup, Validators } from '@angular/forms';
 import { City } from '../models/city.interface';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient, HttpParams } from '@angular/common/http';
@@ -7,6 +7,8 @@ import { BASE_URL } from '../_config/app.config';
 import { Country } from '../models/country.interface';
 import { ApiResult } from '../models/api-result.interface';
 import { F } from '@angular/cdk/keycodes';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-city-edit',
@@ -44,7 +46,7 @@ export class CityEditComponent implements OnInit {
       lat: new FormControl('', Validators.required),
       lon: new FormControl('', Validators.required),
       countryId: new FormControl('', Validators.required)
-    });
+    }, null, this.isDupeCity());
     this.loadData();
   }
 
@@ -104,6 +106,23 @@ export class CityEditComponent implements OnInit {
         },
         error => console.error(error));
     }
+  }
+
+  isDupeCity(): AsyncValidatorFn {
+    return (control: AbstractControl): Observable<Record<string, any> | null> => {
+      const city = {} as City;
+      city.id = this.id ? this.id : 0;
+      city.name = this.form.get('name').value;
+      city.lat = +this.form.get('lat').value;
+      city.lon = +this.form.get('lon').value;
+      city.countryId = +this.form.get('countryId').value;
+
+      const url = this.baseurl + 'Cities/IsDupeCity';
+      return this.http.post<boolean>(url, city).pipe(
+        map(result => {
+          return result ? {isDupeCity: true} : null;
+        }));
+    };
   }
 
 }

@@ -100,6 +100,17 @@ public class CitiesController : ControllerBase
         return NoContent();
     }
 
+    [HttpPost]
+    [Route("IsDupeCity")]
+    public bool IsDupeCity(City testCity)
+    {
+        return _context.Cities.Any(c => c.Name == testCity.Name
+                                        && c.Lat == testCity.Lat
+                                        && c.Lon == testCity.Lon
+                                        && c.CountryId == testCity.CountryId
+                                        && c.Id != testCity.Id);
+    }
+
     private bool CityExists(int id)
     {
         return _context.Cities.Any(e => e.Id == id);
