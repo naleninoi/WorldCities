@@ -6,6 +6,8 @@ import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { ApiResult } from '../models/api-result.interface';
 import { MatSort } from '@angular/material/sort';
 import { Country } from '../models/country.interface';
+import { Subject } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 
 @Component({
   selector: 'app-countries',
@@ -27,6 +29,8 @@ export class CountriesComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
+  filterTextChanged = new Subject<void>();
+
   constructor(
     private http: HttpClient,
     @Inject(BASE_URL) private baseUrl: string) {
@@ -34,6 +38,15 @@ export class CountriesComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadData();
+  }
+
+  onFilterTextChanged(): void {
+    if (this.filterTextChanged.observers.length === 0) {
+      this.filterTextChanged.pipe(
+        debounceTime(1000)
+      ).subscribe(() => this.loadData());
+    }
+    this.filterTextChanged.next();
   }
 
   loadData(): void {

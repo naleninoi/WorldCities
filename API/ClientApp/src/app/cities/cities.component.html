@@ -12,7 +12,7 @@
 <mat-form-field [hidden]="!cities">
   <input matInput [(ngModel)]="filterQuery"
          placeholder="Filter by name (or part of it)..."
-         (keyup)="loadData()">
+         (ngModelChange)="onFilterTextChanged()">
 </mat-form-field>
 
 <table mat-table [dataSource]="cities"
