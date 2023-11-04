@@ -15,7 +15,7 @@ import { debounceTime } from 'rxjs/operators';
   styleUrls: ['./countries.component.css']
 })
 export class CountriesComponent implements OnInit {
-  public displayedColumns: string[] = ['id', 'name', 'iso2', 'iso3'];
+  public displayedColumns: string[] = ['id', 'name', 'iso2', 'iso3', 'totalCities'];
   public countries: MatTableDataSource<Country>;
 
   defaultPageIndex = 0;
