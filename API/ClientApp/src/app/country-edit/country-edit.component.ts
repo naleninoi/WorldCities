@@ -6,13 +6,14 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { BASE_URL } from '../_config/app.config';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { BaseFormComponent } from '../base/base-form.component';
 
 @Component({
   selector: 'app-country-edit',
   templateUrl: './country-edit.component.html',
   styleUrls: ['./country-edit.component.css']
 })
-export class CountryEditComponent implements OnInit {
+export class CountryEditComponent extends BaseFormComponent implements OnInit {
 
   title: string;
 
@@ -33,6 +34,7 @@ export class CountryEditComponent implements OnInit {
     private http: HttpClient,
     @Inject(BASE_URL) private baseurl: string
   ) {
+    super();
   }
 
   ngOnInit(): void {

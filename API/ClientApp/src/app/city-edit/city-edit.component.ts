@@ -9,13 +9,14 @@ import { ApiResult } from '../models/api-result.interface';
 import { F } from '@angular/cdk/keycodes';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { BaseFormComponent } from '../base/base-form.component';
 
 @Component({
   selector: 'app-city-edit',
   templateUrl: './city-edit.component.html',
   styleUrls: ['./city-edit.component.css']
 })
-export class CityEditComponent implements OnInit {
+export class CityEditComponent extends BaseFormComponent implements OnInit {
 
   title: string;
 
@@ -38,6 +39,7 @@ export class CityEditComponent implements OnInit {
     private http: HttpClient,
     @Inject(BASE_URL) private baseurl: string
   ) {
+    super();
   }
 
   ngOnInit(): void {
