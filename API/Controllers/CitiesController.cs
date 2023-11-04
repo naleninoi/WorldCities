@@ -1,4 +1,5 @@
 ﻿using API.Data;
+using API.Data.Dto;
 using API.Data.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -19,7 +20,7 @@ public class CitiesController : ControllerBase
     // GET: api/Cities
     // GET: api/Cities/?pageIndex=0&pageSize=10
     [HttpGet]
-    public async Task<ActionResult<ApiResult<City>>> GetCities(
+    public async Task<ActionResult<ApiResult<CityDto>>> GetCities(
         int pageIndex = 0,
         int pageSize = 10,
         string sortColumn = null,
@@ -27,7 +28,17 @@ public class CitiesController : ControllerBase
         string filterColumn = null,
         string filterQuery = null)
     {
-        return await ApiResult<City>.CreateAsync(_context.Cities,
+        return await ApiResult<CityDto>.CreateAsync(
+            _context.Cities.Select(c => new CityDto
+            {
+                Id = c.Id,
+                Name = c.Name,
+                Name_ASCII = c.Name_ASCII,
+                Lat = c.Lat,
+                Lon = c.Lon,
+                CountryId = c.CountryId,
+                CountryName = c.Country.Name
+            }),
             pageIndex, pageSize, sortColumn, sortOrder, filterColumn, filterQuery);
     }
 
