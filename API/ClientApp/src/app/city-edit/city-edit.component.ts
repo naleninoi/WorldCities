@@ -1,15 +1,14 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn, FormControl, FormGroup, Validators } from '@angular/forms';
 import { City } from '../models/city.interface';
 import { ActivatedRoute, Router } from '@angular/router';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { BASE_URL } from '../_config/app.config';
+import { HttpParams } from '@angular/common/http';
 import { Country } from '../models/country.interface';
-import { ApiResult } from '../models/api-result.interface';
-import { F } from '@angular/cdk/keycodes';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { BaseFormComponent } from '../base/base-form.component';
+import { CityService } from '../services/city.service';
+import { CountryService } from '../services/country.service';
 
 @Component({
   selector: 'app-city-edit',
@@ -36,17 +35,17 @@ export class CityEditComponent extends BaseFormComponent implements OnInit {
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
-    private http: HttpClient,
-    @Inject(BASE_URL) private baseurl: string
+    private cityService: CityService,
+    private countryService: CountryService
   ) {
     super();
   }
 
   ngOnInit(): void {
     this.form = new FormGroup({
-      name: new FormControl('', [Validators.required, Validators.pattern(/^[-]?[0-9]{1,3}(\.[0-9]{1,4})?$/)]),
+      name: new FormControl('', Validators.required),
       lat: new FormControl('', [Validators.required, Validators.pattern(/^[-]?[0-9]{1,3}(\.[0-9]{1,4})?$/)]),
-      lon: new FormControl('', Validators.required),
+      lon: new FormControl('', [Validators.required, Validators.pattern(/^[-]?[0-9]{1,3}(\.[0-9]{1,4})?$/)]),
       countryId: new FormControl('', Validators.required)
     }, null, this.isDupeCity());
     this.loadData();
@@ -59,8 +58,7 @@ export class CityEditComponent extends BaseFormComponent implements OnInit {
     this.id = +this.activatedRoute.snapshot.paramMap.get('id');
     // EDIT MODE
     if (this.id) {
-      const url = this.baseurl + 'Cities/' + this.id;
-      this.http.get<City>(url).subscribe(result => {
+      this.cityService.get(this.id).subscribe(result => {
           this.city = result;
           this.title = 'Edit - ' + this.city.name;
 
@@ -74,12 +72,11 @@ export class CityEditComponent extends BaseFormComponent implements OnInit {
   }
 
   loadCountries(): void {
-    const url = this.baseurl + 'Countries';
     const params = new HttpParams()
       .set('pageIndex', '0')
       .set('pageSize', '9999')
       .set('sortColumn', 'name');
-    this.http.get<ApiResult<Country>>(url, {params})
+    this.countryService.getAllCountries()
       .subscribe(result => this.countries = result.data,
         error => console.error(error));
   }
@@ -93,16 +90,14 @@ export class CityEditComponent extends BaseFormComponent implements OnInit {
 
     // EDIT MODE
     if (this.id) {
-      const url = this.baseurl + 'Cities/' + this.id;
-      this.http.put<City>(url, city).subscribe(result => {
+      this.cityService.put(city).subscribe(result => {
           console.log(`City with id ${this.city.id} has been updated.`);
           this.router.navigateByUrl('/cities');
         },
         error => console.error(error));
       // CREATE MODE
     } else {
-      const url = this.baseurl + 'Cities';
-      this.http.post<City>(url, city).subscribe(result => {
+      this.cityService.post(city).subscribe(result => {
           console.log(`City with id ${result.id} has been created.`);
           this.router.navigateByUrl('/cities');
         },
@@ -119,8 +114,7 @@ export class CityEditComponent extends BaseFormComponent implements OnInit {
       city.lon = +this.form.get('lon').value;
       city.countryId = +this.form.get('countryId').value;
 
-      const url = this.baseurl + 'Cities/IsDupeCity';
-      return this.http.post<boolean>(url, city).pipe(
+      return this.cityService.isDupeCity(city).pipe(
         map(result => {
           return result ? {isDupeCity: true} : null;
         }));

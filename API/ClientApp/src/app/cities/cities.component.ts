@@ -1,13 +1,11 @@
-﻿import { Component, Inject, OnInit, ViewChild } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+﻿import { Component, OnInit, ViewChild } from '@angular/core';
 import { City } from '../models/city.interface';
-import { BASE_URL } from '../_config/app.config';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { ApiResult } from '../models/api-result.interface';
 import { MatSort } from '@angular/material/sort';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
+import { CityService } from '../services/city.service';
 
 @Component({
   selector: 'app-cities',
@@ -32,8 +30,7 @@ export class CitiesComponent implements OnInit {
   filterTextChanged = new Subject<void>();
 
   constructor(
-    private http: HttpClient,
-    @Inject(BASE_URL) private baseUrl: string) {
+    private cityService: CityService) {
   }
 
   ngOnInit(): void {
@@ -57,19 +54,14 @@ export class CitiesComponent implements OnInit {
   }
 
   getData(event: PageEvent): void {
-    const url = this.baseUrl + 'Cities';
-    let params = new HttpParams()
-      .set('pageIndex', event.pageIndex.toString())
-      .set('pageSize', event.pageSize.toString())
-      .set('sortColumn', this.sort && this.sort.active ? this.sort.active : this.defaultSortColumn)
-      .set('sortOrder', this.sort && this.sort.direction ? this.sort.direction : this.defaultSortOrder);
+    const pageIndex = event.pageIndex;
+    const pageSize = event.pageSize;
+    const sortColumn= this.sort && this.sort.active ? this.sort.active : this.defaultSortColumn;
+    const sortOrder= this.sort && this.sort.direction ? this.sort.direction : this.defaultSortOrder;
+    const filterColumn= this.filterQuery ? this.defaultFilterColumn : null;
+    const filterQuery= this.filterQuery ? this.filterQuery : null;
 
-    if (this.filterQuery) {
-      params = params.append('filterColumn', this.defaultFilterColumn);
-      params = params.append('filterQuery', this.filterQuery);
-    }
-
-    this.http.get<ApiResult<City>>(url, {params})
+    this.cityService.getData(pageIndex, pageSize, sortColumn, sortOrder, filterColumn, filterQuery)
       .subscribe(result => {
         this.paginator.length = result.totalCount;
         this.paginator.pageIndex = result.pageIndex;

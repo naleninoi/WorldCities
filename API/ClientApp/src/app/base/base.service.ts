@@ -2,14 +2,14 @@
 import { Observable } from 'rxjs';
 import { ApiResult } from '../models/api-result.interface';
 
-export abstract class BaseService {
+export abstract class BaseService<T> {
   protected constructor(
     protected http: HttpClient,
     protected baseUrl: string
   ) {
   }
 
-  abstract getData<T>(
+  abstract getData(
     pageIndex: number,
     pageSize: number,
     sortColumn: string,
@@ -17,11 +17,11 @@ export abstract class BaseService {
     filterColumn: string,
     filterQuery: string): Observable<ApiResult<T>>;
 
-  abstract get<T>(id: number): Observable<T>;
+  abstract get(id: number): Observable<T>;
 
-  abstract put<T>(item: T): Observable<T>;
+  abstract put(item: T): Observable<T>;
 
-  abstract post<T>(item: T): Observable<T>;
+  abstract post(item: T): Observable<T>;
 
 
 }
