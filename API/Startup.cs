@@ -1,6 +1,7 @@
 ﻿using API.Data;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 
 namespace API;
 
@@ -78,5 +79,7 @@ public class Startup
                 spa.UseAngularCliServer(npmScript: "start");
             }
         });
+
+        app.UseSerilogRequestLogging();
     }
 }
