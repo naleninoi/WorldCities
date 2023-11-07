@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
 
@@ -41,28 +40,12 @@ public class SeedControllerTests
         using (var context = new ApplicationDbContext(options, storeOptions))
         {
             // create a RoleManager instance
-            var roleStore = new RoleStore<IdentityRole>(context);
-            var roleManager = new RoleManager<IdentityRole>(
-                roleStore, Array.Empty<IRoleValidator<IdentityRole>>(),
-                new UpperInvariantLookupNormalizer(),
-                new Mock<IdentityErrorDescriber>().Object,
-                new Mock<ILogger<RoleManager<IdentityRole>>>().Object
-            );
+            var roleManager = IdentityHelper.GetRoleManager(
+                    new RoleStore<IdentityRole>(context));
 
             // create a UserManager instance
-            var userStore = new
-                UserStore<ApplicationUser>(context);
-            var userManager = new UserManager<ApplicationUser>(
-                userStore,
-                new Mock<IOptions<IdentityOptions>>().Object,
-                new Mock<IPasswordHasher<ApplicationUser>>().Object,
-                Array.Empty<IUserValidator<ApplicationUser>>(),
-                Array.Empty<IPasswordValidator<ApplicationUser>>(),
-                new UpperInvariantLookupNormalizer(),
-                new Mock<IdentityErrorDescriber>().Object,
-                new Mock<IServiceProvider>().Object,
-                new Mock<ILogger<UserManager<ApplicationUser>>>(
-                ).Object);
+            var userManager = IdentityHelper.GetUserManager(
+                new UserStore<ApplicationUser>(context));
 
             // create a SeedController instance
             var controller = new SeedController(
