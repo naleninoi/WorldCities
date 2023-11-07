@@ -1,4 +1,7 @@
 ﻿using API.Data;
+using API.Data.Models;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
@@ -27,6 +30,24 @@ public class Startup
         var connectionString = Configuration["ConnectionStrings:DefaultConnection"];
 
         services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(connectionString));
+
+        services.AddDefaultIdentity<ApplicationUser>(options =>
+            {
+                options.SignIn.RequireConfirmedAccount = true;
+                options.Password.RequireDigit = true;
+                options.Password.RequireLowercase = true;
+                options.Password.RequireUppercase = true;
+                options.Password.RequireNonAlphanumeric = true;
+                options.Password.RequiredLength = 8;
+            })
+            .AddRoles<IdentityRole>()
+            .AddEntityFrameworkStores<ApplicationDbContext>();
+
+        services.AddIdentityServer()
+            .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
+
+        services.AddAuthentication()
+            .AddIdentityServerJwt();
     }
     
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -59,6 +80,10 @@ public class Startup
         }
 
         app.UseRouting();
+
+        app.UseAuthentication();
+        app.UseIdentityServer();
+        app.UseAuthorization();
 
         app.UseEndpoints(endpoints =>
         {

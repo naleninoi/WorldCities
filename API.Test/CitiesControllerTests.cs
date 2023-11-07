@@ -1,7 +1,10 @@
 ﻿using API.Controllers;
 using API.Data;
 using API.Data.Models;
+using Duende.IdentityServer.EntityFramework.Options;
+using IdentityModel;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 namespace API.Test;
 
@@ -17,7 +20,8 @@ public class CitiesControllerTests
         var options = new DbContextOptionsBuilder()
             .UseInMemoryDatabase(databaseName: "world_cities")
             .Options;
-        using (var context = new ApplicationDbContext(options))
+        var storeOptions = Options.Create(new OperationalStoreOptions());
+        using (var context = new ApplicationDbContext(options, storeOptions))
         {
             context.Add(new City
             {
@@ -36,7 +40,7 @@ public class CitiesControllerTests
         #endregion
 
         #region Act
-        using (var context = new ApplicationDbContext(options))
+        using (var context = new ApplicationDbContext(options, storeOptions))
         {
             var controller = new CitiesController(context);
             existingCity = (await controller.GetCity(1)).Value;
