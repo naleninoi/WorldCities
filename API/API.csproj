@@ -9,6 +9,7 @@
         <PackageReference Include="EPPlus" Version="4.5.3.3" />
         <PackageReference Include="Microsoft.AspNetCore.ApiAuthorization.IdentityServer" Version="6.0.22" />
         <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.22" />
+        <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.22" />
         <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="6.0.23" />
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.23" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.23">
@@ -26,6 +27,12 @@
       <Folder Include="ClientApp\" />
       <Folder Include="Data\Migrations\" />
       <Folder Include="Data\Source\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Pages\Shared\_Layout.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Shared\_LoginPartial.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Shared\_ValidationScriptsPartial.cshtml" />
     </ItemGroup>
 
 </Project>
