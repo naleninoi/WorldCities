@@ -8,8 +8,8 @@ using Microsoft.Extensions.DependencyInjection;
 using API.Data;
 using API.Data.Models;
 
-[assembly: HostingStartup(typeof(WorldCities.Areas.Identity.IdentityHostingStartup))]
-namespace WorldCities.Areas.Identity
+[assembly: HostingStartup(typeof(API.Data.Identity.IdentityHostingStartup))]
+namespace API.Data.Identity
 {
     public class IdentityHostingStartup : IHostingStartup
     {

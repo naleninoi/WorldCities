@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using API.Data.Models;
 
-namespace WorldCities.Areas.Identity.Pages.Account.Manage
+namespace API.Areas.Identity.Pages.Account.Manage
 {
     public partial class EmailModel : PageModel
     {

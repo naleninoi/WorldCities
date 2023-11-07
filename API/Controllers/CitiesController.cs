@@ -1,6 +1,7 @@
 ﻿using API.Data;
 using API.Data.Dto;
 using API.Data.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -56,6 +57,7 @@ public class CitiesController : ControllerBase
     }
 
     // PUT: api/Cities/5
+    [Authorize]
     [HttpPut("{id}")]
     public async Task<IActionResult> PutCity(int id, City city)
     {
@@ -86,6 +88,7 @@ public class CitiesController : ControllerBase
     }
 
     // POST: api/Cities
+    [Authorize]
     [HttpPost]
     public async Task<ActionResult<City>> PostCity(City city)
     {
@@ -97,6 +100,7 @@ public class CitiesController : ControllerBase
     }
 
     // DELETE: api/Cities/5
+    [Authorize]
     [HttpDelete("{id}")]
     public async Task<ActionResult<City>> DeleteCity(int id)
     {

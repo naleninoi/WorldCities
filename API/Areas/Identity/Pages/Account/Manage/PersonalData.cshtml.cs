@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using API.Data.Models;
 
-namespace WorldCities.Areas.Identity.Pages.Account.Manage
+namespace API.Areas.Identity.Pages.Account.Manage
 {
     public class PersonalDataModel : PageModel
     {

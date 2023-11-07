@@ -1,6 +1,7 @@
 ﻿using API.Data;
 using API.Data.Dto;
 using API.Data.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -54,6 +55,7 @@ public class CountriesController : ControllerBase
     }
 
     // PUT: api/Countries/5
+    [Authorize]
     [HttpPut("{id}")]
     public async Task<IActionResult> PutCountry(int id, Country country)
     {
@@ -84,6 +86,7 @@ public class CountriesController : ControllerBase
     }
 
     // POST: api/Countries
+    [Authorize]
     [HttpPost]
     public async Task<ActionResult<Country>> PostCountry(Country country)
     {
@@ -94,6 +97,7 @@ public class CountriesController : ControllerBase
     }
 
     // DELETE: api/Countries/5
+    [Authorize]
     [HttpDelete("{id}")]
     public async Task<ActionResult<Country>> DeleteCountry(int id)
     {

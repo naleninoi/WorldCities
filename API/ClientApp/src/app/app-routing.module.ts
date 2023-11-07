@@ -11,10 +11,10 @@ const routes: Routes = [
   { path: '', component: HomeComponent, pathMatch: 'full' },
   { path: 'cities', component: CitiesComponent },
   { path: 'city/:id', component: CityEditComponent, canActivate: [AuthorizeGuard] },
-  { path: 'city', component: CityEditComponent },
+  { path: 'city', component: CityEditComponent, canActivate: [AuthorizeGuard] },
   { path: 'countries', component: CountriesComponent },
   { path: 'country/:id', component: CountryEditComponent, canActivate: [AuthorizeGuard] },
-  { path: 'country', component: CountryEditComponent },
+  { path: 'country', component: CountryEditComponent, canActivate: [AuthorizeGuard] },
 ];
 
 @NgModule({
