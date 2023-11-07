@@ -2,7 +2,6 @@
 using API.Data;
 using API.Data.Models;
 using Duende.IdentityServer.EntityFramework.Options;
-using IdentityModel;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 

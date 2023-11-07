@@ -1,6 +1,7 @@
 ﻿using System.Security;
 using API.Data;
 using API.Data.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OfficeOpenXml;
@@ -12,11 +13,19 @@ namespace API.Controllers;
 public class SeedController : ControllerBase
 {
     private readonly ApplicationDbContext _context;
+    private readonly RoleManager<IdentityRole> _roleManager;
+    private readonly UserManager<ApplicationUser> _userManager;
     private readonly IWebHostEnvironment _env;
 
-    public SeedController(ApplicationDbContext context, IWebHostEnvironment env)
+    public SeedController(
+        ApplicationDbContext context,
+        RoleManager<IdentityRole> roleManager,
+        UserManager<ApplicationUser> userManager,
+        IWebHostEnvironment env)
     {
         _context = context;
+        _roleManager = roleManager;
+        _userManager = userManager;
         _env = env;
     }
 
@@ -144,5 +153,11 @@ public class SeedController : ControllerBase
             Cities = numberOfCitiesAdded,
             Countries = numberOfCountriesAdded
         });
+    }
+
+    [HttpGet]
+    public async Task<ActionResult> CreateDefaultUsers()
+    {
+        throw new NotImplementedException();
     }
 }
